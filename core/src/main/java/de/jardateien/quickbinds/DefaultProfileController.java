@@ -22,15 +22,14 @@ public class DefaultProfileController implements ProfileController {
   private final List<Profile> profiles = new ArrayList<>();
   private final Gson gson = new Gson();
   private final Path minecraftOptions = Paths.get("options.txt");
+  private final Path profilesPath = Paths.get("labymod-neo/configs/quickbinds/profiles");
 
   @Override
   public void loadProfile(UUID id) {
-    Path profilePath = this.profilesDirectory().resolve(id.toString());
+    Path profilePath = this.getProfilePath(id);
     if (Files.exists(profilePath)) {
-      System.out.println("1");
       Path optionPath = profilePath.resolve("options.txt");
       if (Files.exists(optionPath)) {
-        System.out.println("2");
         QuickBindsAddon.referenceStorage().settingController().save(optionPath);
       }
     }
@@ -39,40 +38,37 @@ public class DefaultProfileController implements ProfileController {
   @Override
   public void saveCurrentProfile(String name) {
     Profile profile = new Profile(name, UUID.randomUUID());
-    Path directory = this.directory(profile.id());
+    Path directory = this.getProfilePath(profile.id());
     try {
       Files.createDirectories(directory);
       Files.copy(this.minecraftOptions, directory.resolve("options.txt"), StandardCopyOption.REPLACE_EXISTING);
-      Path resolve = directory.resolve("info.json");
-      resolve.toFile().createNewFile();
-      Files.write(resolve, this.gson.toJson(profile).getBytes());
+      Path infoJson = directory.resolve("info.json");
+      boolean fileCreated = infoJson.toFile().createNewFile();
+      if (fileCreated)
+        Files.write(infoJson, this.gson.toJson(profile).getBytes());
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
   }
 
-  private Path profilesDirectory() {
-    return Paths.get("labymod-neo/configs/quickbinds/profiles");
-  }
-
-  private Path directory(UUID id) {
-    return this.profilesDirectory().resolve(id.toString());
-  }
-
   @Override
   public void deleteProfile(UUID id) {
-
+    try {
+      Files.delete(this.getProfilePath(id));
+      this.profiles.removeIf(profile -> profile.id().equals(id));
+    } catch (IOException e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @Override
   public List<Profile> profiles() {
-    if(this.profiles.isEmpty()) {
-
-      try(DirectoryStream<Path> stream = Files.newDirectoryStream(this.profilesDirectory())) {
+    if (this.profiles.isEmpty()) {
+      try (DirectoryStream<Path> stream = Files.newDirectoryStream(this.profilesPath)) {
         for (Path path : stream) {
-          if(Files.isDirectory(path)) {
+          if (Files.isDirectory(path)) {
             Path resolve = path.resolve("info.json");
-            if(Files.exists(resolve)) {
+            if (Files.exists(resolve)) {
               Profile profile = this.gson.fromJson(Files.newBufferedReader(resolve), Profile.class);
               this.profiles.add(profile);
             }
@@ -82,9 +78,13 @@ public class DefaultProfileController implements ProfileController {
       } catch (IOException e) {
         throw new RuntimeException(e);
       }
-
     }
 
     return this.profiles;
   }
+
+  private Path getProfilePath(UUID id) {
+    return this.profilesPath.resolve(id.toString());
+  }
+
 }

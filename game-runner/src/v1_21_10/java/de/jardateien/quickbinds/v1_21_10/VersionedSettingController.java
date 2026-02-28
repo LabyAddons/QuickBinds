@@ -8,7 +8,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
+import java.util.List;
 
 @Singleton
 @Implements(SettingController.class)
@@ -16,12 +16,13 @@ public class VersionedSettingController implements SettingController {
 
   @Override
   public void save(Path profile) {
-    Minecraft.getInstance().options.load();
     try {
-      Files.copy(profile, Paths.get("options.txt"), StandardCopyOption.REPLACE_EXISTING);
+      List<String> strings = Files.readAllLines(profile);
+      Files.write(Paths.get("options.txt"), strings);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+    Minecraft.getInstance().options.load();
     Minecraft.getInstance().options.save();
   }
 }
