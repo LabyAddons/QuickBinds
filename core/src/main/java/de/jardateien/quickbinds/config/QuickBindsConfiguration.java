@@ -1,6 +1,6 @@
 package de.jardateien.quickbinds.config;
 
-import de.jardateien.quickbinds.config.ui.ProfileManagerActivity;
+import de.jardateien.quickbinds.ui.activity.ProfileManagerActivity;
 import net.labymod.api.addon.AddonConfig;
 import net.labymod.api.client.gui.screen.activity.Activity;
 import net.labymod.api.client.gui.screen.widget.widgets.activity.settings.ActivitySettingWidget.ActivitySetting;

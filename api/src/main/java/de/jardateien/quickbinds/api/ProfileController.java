@@ -10,6 +10,7 @@ public interface ProfileController {
   void loadProfile(UUID id);
   void saveCurrentProfile(String name);
   void deleteProfile(UUID id);
+  void renameProfile(UUID id, String name);
 
   List<Profile> profiles();
 

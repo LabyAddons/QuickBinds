@@ -15,8 +15,6 @@ public class QuickBindsAddon extends LabyAddon<QuickBindsConfiguration> {
     instance = this;
     this.registerSettingCategory();
 
-    this.registerCommand(new TestCommand());
-
     this.logger().info("Enabled the Addon");
   }
 

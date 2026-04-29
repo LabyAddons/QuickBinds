@@ -1,0 +1,20 @@
+{
+  "quickbinds": {
+    "settings": {
+      "enabled": {
+        "name": "Enabled"
+      },
+      "profiles": {
+        "name": "Profile QuickBinds list",
+        "button": {
+          "tooltip": "You can create max. 13 Profiles"
+        }
+      }
+    },
+    "popup": {
+      "rename": {
+        "title": "Profile-Name"
+      }
+    }
+  }
+}
