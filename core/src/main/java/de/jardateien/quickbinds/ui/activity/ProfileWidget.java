@@ -42,13 +42,11 @@ public class ProfileWidget extends HorizontalListWidget {
           this.activity.reload();
         })
     );
-    /*
-    ButtonWidget saveProfile = ButtonWidget.icon(SpriteCommon.COPY, () -> {
-      this.profileController.deleteProfile(this.profile.id());
-      this.profileController.saveCurrentProfile(this.profile.name());
-      this.activity.reload();
+
+    ButtonWidget saveProfile = ButtonWidget.icon(SpriteCommon.SETTINGS, () -> {
+      //TODO Load Profile, Open OptionScreen, Update Profile
     });
-     */
+
     ButtonWidget deleteProfile = ButtonWidget.icon(SpriteCommon.TRASH, () -> {
       this.profileController.deleteProfile(this.profile.id());
       this.activity.reload();
@@ -56,7 +54,7 @@ public class ProfileWidget extends HorizontalListWidget {
 
     buttons.addEntry(selectProfile);
     buttons.addEntry(renameButton);
-    //buttons.addEntry(saveProfile);
+    buttons.addEntry(saveProfile);
     buttons.addEntry(deleteProfile);
 
     this.addEntry(name);

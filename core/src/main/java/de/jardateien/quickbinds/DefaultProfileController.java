@@ -115,30 +115,6 @@ public class DefaultProfileController implements ProfileController {
     return this.profiles;
   }
 
-  /*
-  @Override
-  public List<Profile> profiles() {
-    if (this.profiles.isEmpty()) {
-      try (DirectoryStream<Path> stream = Files.newDirectoryStream(this.getProfilesPath())) {
-        for (Path path : stream) {
-          if (Files.isDirectory(path)) {
-            Path infoPath = path.resolve("info.json");
-            if (Files.exists(infoPath)) {
-              Profile profile = this.gson.fromJson(Files.newBufferedReader(infoPath), Profile.class);
-              if(this.profiles.stream().noneMatch(p -> p.id().equals(profile.id()))) {
-                this.profiles.add(profile);
-              }
-            }
-          }
-        }
-      } catch (IOException e) {
-        throw new RuntimeException(e);
-      }
-    }
-    return this.profiles;
-  }
-   */
-
   private Path getProfilesPath() {
     if (Laby.labyAPI().labyModLoader().isAddonDevelopmentEnvironment()) {
       return Paths.get("labymod-neo/configs/quickbinds/profiles");

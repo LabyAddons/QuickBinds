@@ -1,6 +1,7 @@
 package de.jardateien.quickbinds;
 
 import de.jardateien.quickbinds.api.generated.ReferenceStorage;
+import de.jardateien.quickbinds.listeners.KeybindListener;
 import net.labymod.api.addon.LabyAddon;
 import net.labymod.api.models.addon.annotation.AddonMain;
 import de.jardateien.quickbinds.config.QuickBindsConfiguration;
@@ -15,6 +16,7 @@ public class QuickBindsAddon extends LabyAddon<QuickBindsConfiguration> {
     instance = this;
     this.registerSettingCategory();
 
+    this.registerListener(new KeybindListener(this));
     this.logger().info("Enabled the Addon");
   }
 

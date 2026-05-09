@@ -52,4 +52,5 @@ public class ProfileManagerActivity extends Activity {
     this.document.addChild(this.verticalListWidget);
     this.document.addChild(buttonWidget);
   }
+
 }
