@@ -20,7 +20,8 @@ public class KeybindListener {
   @Subscribe
   public void onKeyPressed(final KeyEvent keyEvent) {
     Key key = keyEvent.key();
-    if(!key.isPressed() || keyEvent.state() != State.PRESS || !this.config.keybind().get().equals(key)) return;
+    if(!key.isPressed() || keyEvent.state() != State.PRESS || !this.config.keybind().get().equals(key))
+      return;
 
     Laby.labyAPI().minecraft().minecraftWindow().displayScreen(new ProfileManagerActivity());
   }
