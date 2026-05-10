@@ -35,5 +35,4 @@ public class QuickBindsConfiguration extends AddonConfig {
     return this.keybind;
   }
 
-
 }

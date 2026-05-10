@@ -116,11 +116,23 @@ public class DefaultProfileController implements ProfileController {
   }
 
   private Path getProfilesPath() {
+    Path path;
+
     if (Laby.labyAPI().labyModLoader().isAddonDevelopmentEnvironment()) {
-      return Paths.get("labymod-neo/configs/quickbinds/profiles");
+      path = Paths.get("labymod-neo/configs/quickbinds/profiles");
     } else {
-      return QuickBindsAddon.instance.addonInfo().getDirectoryPath();
+      path = QuickBindsAddon.instance.addonInfo().getDirectoryPath();
     }
+
+    if(!Files.exists(path)) {
+      try {
+        Files.createDirectories(path);
+      } catch (IOException e) {
+        throw new RuntimeException(e);
+      }
+    }
+
+    return path;
   }
 
   private Path getProfilePath(UUID id) {
