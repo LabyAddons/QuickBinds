@@ -8,6 +8,7 @@ import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.models.Implements;
 import javax.inject.Singleton;
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.DirectoryStream;
@@ -19,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Stream;
 
 @Singleton
 @Implements(ProfileController.class)
@@ -76,20 +78,21 @@ public class DefaultProfileController implements ProfileController {
 
   @Override
   public void deleteProfile(UUID id) {
-    try {
-      Files.walk(this.profilePath(id))
-          .sorted(Comparator.reverseOrder())
+    Profile profile = this.profile(id);
+    if(profile == null)
+      return;
+
+    try (Stream<Path> walker = Files.walk(this.profilePath(id))) {
+      walker.sorted(Comparator.reverseOrder())
           .forEach(path -> {
-            try {
-              Files.delete(path);
-            } catch (IOException e) {
-              throw new RuntimeException(e);
-            }
+            try { Files.delete(path); }
+            catch (IOException e) { throw new RuntimeException(e); }
           });
-      this.profiles.removeIf(profile -> profile.id().equals(id));
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
+
+    this.profiles.remove(profile);
   }
 
   @Override
@@ -120,10 +123,13 @@ public class DefaultProfileController implements ProfileController {
           Path infoPath = path.resolve("info.json");
           if (!Files.exists(infoPath))
             continue;
-          Profile profile = this.gson.fromJson(Files.newBufferedReader(infoPath), Profile.class);
-          if(this.profiles.stream().anyMatch(p -> p.id().equals(profile.id())))
-            continue;
-          this.profiles.add(profile);
+
+          try (BufferedReader reader = Files.newBufferedReader(infoPath)) {
+            Profile profile = this.gson.fromJson(reader, Profile.class);
+            if (this.profiles.stream().anyMatch(p -> p.id().equals(profile.id())))
+              continue;
+            this.profiles.add(profile);
+          }
         }
       } catch (IOException e) {
         throw new RuntimeException(e);
