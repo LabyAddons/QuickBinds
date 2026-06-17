@@ -3,7 +3,9 @@ package de.jardateien.quickbinds;
 import com.google.gson.Gson;
 import de.jardateien.quickbinds.api.Profile;
 import de.jardateien.quickbinds.api.ProfileController;
+import de.jardateien.quickbinds.ui.activity.ConfirmActivity;
 import net.labymod.api.Laby;
+import net.labymod.api.client.component.Component;
 import net.labymod.api.models.Implements;
 import javax.inject.Singleton;
 import java.io.IOException;
@@ -25,22 +27,39 @@ public class DefaultProfileController implements ProfileController {
   private final List<Profile> profiles = new ArrayList<>();
   private final Gson gson = new Gson();
   private final Path minecraftOptions = Paths.get("options.txt");
+  private final String version = Laby.labyAPI().minecraft().getVersion();
+  private final int protocol = Laby.labyAPI().minecraft().getProtocolVersion();
 
   @Override
   public void loadProfile(UUID id) {
-    Path profilePath = this.getProfilePath(id);
+    Path profilePath = this.profilePath(id);
     if (!Files.exists(profilePath))
       return;
+
     Path optionPath = profilePath.resolve("options.txt");
     if (!Files.exists(optionPath))
       return;
+
+    Profile profile = this.profile(id);
+    assert profile != null;
+
+    if(profile.protocol() != this.protocol) {
+      ConfirmActivity.confirm(Component.translatable("quickbinds.ui.confirm.title"), Component.translatable("quickbinds.ui.confirm.description"), result -> {
+        if(result == true) {
+          QuickBindsAddon.referenceStorage().settingController().save(optionPath);
+        }
+      });
+
+      return;
+    }
+
     QuickBindsAddon.referenceStorage().settingController().save(optionPath);
   }
 
   @Override
   public void saveCurrentProfile(String name) {
-    Profile profile = new Profile(name, UUID.randomUUID());
-    Path directory = this.getProfilePath(profile.id());
+    Profile profile = new Profile(name, this.version, this.protocol, UUID.randomUUID());
+    Path directory = this.profilePath(profile.id());
     try {
       Files.createDirectories(directory);
       Files.copy(this.minecraftOptions, directory.resolve("options.txt"), StandardCopyOption.REPLACE_EXISTING);
@@ -58,11 +77,14 @@ public class DefaultProfileController implements ProfileController {
   @Override
   public void deleteProfile(UUID id) {
     try {
-      Files.walk(this.getProfilePath(id))
+      Files.walk(this.profilePath(id))
           .sorted(Comparator.reverseOrder())
           .forEach(path -> {
-            try { Files.delete(path); }
-            catch (IOException e) { throw new RuntimeException(e); }
+            try {
+              Files.delete(path);
+            } catch (IOException e) {
+              throw new RuntimeException(e);
+            }
           });
       this.profiles.removeIf(profile -> profile.id().equals(id));
     } catch (IOException e) {
@@ -72,22 +94,17 @@ public class DefaultProfileController implements ProfileController {
 
   @Override
   public void renameProfile(UUID id, String name) {
-    Path infoJsonPath = this.getProfilePath(id).resolve("info.json");
-
+    Path infoJsonPath = this.profilePath(id).resolve("info.json");
     if (!Files.exists(infoJsonPath))
       return;
 
-    try {
-      Profile renamed = new Profile(name, id);
-      Files.writeString(infoJsonPath, this.gson.toJson(renamed), StandardCharsets.UTF_8);
+    Profile profile = this.profile(id);
+    if(profile == null)
+      return;
 
-      for (int i = 0; i < this.profiles.size(); i++) {
-        Profile profile = this.profiles.get(i);
-        if (profile.id().equals(id)) {
-          this.profiles.set(i, renamed);
-          break;
-        }
-      }
+    profile.setName(name);
+    try {
+      Files.writeString(infoJsonPath, this.gson.toJson(profile), StandardCharsets.UTF_8);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
@@ -96,7 +113,7 @@ public class DefaultProfileController implements ProfileController {
   @Override
   public List<Profile> profiles() {
     if (this.profiles.isEmpty()) {
-      try (DirectoryStream<Path> stream = Files.newDirectoryStream(this.getProfilesPath())) {
+      try (DirectoryStream<Path> stream = Files.newDirectoryStream(this.profilesPath())) {
         for (Path path : stream) {
           if (!Files.isDirectory(path))
             continue;
@@ -115,7 +132,7 @@ public class DefaultProfileController implements ProfileController {
     return this.profiles;
   }
 
-  private Path getProfilesPath() {
+  private Path profilesPath() {
     Path path;
 
     if (Laby.labyAPI().labyModLoader().isAddonDevelopmentEnvironment()) {
@@ -131,12 +148,19 @@ public class DefaultProfileController implements ProfileController {
         throw new RuntimeException(e);
       }
     }
-
     return path;
   }
 
-  private Path getProfilePath(UUID id) {
-    return this.getProfilesPath().resolve(id.toString());
+  private Path profilePath(UUID id) {
+    return this.profilesPath().resolve(id.toString());
+  }
+
+  private Profile profile(UUID id) {
+    for (Profile profile : this.profiles) {
+      if (profile.id().equals(id))
+        return profile;
+    }
+    return null;
   }
 
 }

@@ -1,0 +1,23 @@
+.activity-title {
+  top: 35%;
+  alignment-x: center;
+  max-width: 100%;
+  font-size: 1.2;
+}
+
+.description {
+  top: 40%;
+  alignment-x: center;
+  max-width: 70%;
+  text-alignment: center;
+}
+
+.button-row {
+  top: 50%;
+  left: 50%;
+  width: 25%;
+  height: fit-content;
+  alignment-x: center;
+  space-between-entries: 10;
+  layout: fill;
+}

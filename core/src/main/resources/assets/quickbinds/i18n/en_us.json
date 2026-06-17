@@ -1,14 +1,23 @@
 {
   "quickbinds": {
     "settings": {
+      "keybind":{
+        "name": "Profile QuickBinds Key"
+      },
       "enabled": {
         "name": "Enabled"
       },
       "profiles": {
-        "name": "Profile QuickBinds list",
+        "name": "Profile QuickBinds List",
         "button": {
           "tooltip": "You can create max. 13 Profiles"
         }
+      }
+    },
+    "ui": {
+      "confirm": {
+        "title": "Unsupported Version Conflict!",
+        "description": "This Keybinds was created for an another Minecraft version. \nLoading this keys may have unexpected effects!"
       }
     },
     "popup": {

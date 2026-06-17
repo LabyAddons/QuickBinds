@@ -27,7 +27,7 @@ public class ProfileWidget extends HorizontalListWidget {
   @Override
   public void initialize(Parent parent) {
     super.initialize(parent);
-    ComponentWidget name = ComponentWidget.text(this.profile.name()).addId("profile-name");
+    ComponentWidget name = ComponentWidget.text(this.profile.name() + " §7(" + this.profile.version()+")").addId("profile-name");
 
     HorizontalListWidget buttons = new HorizontalListWidget();
     buttons.addId("buttons");
@@ -43,9 +43,9 @@ public class ProfileWidget extends HorizontalListWidget {
         })
     );
 
-    ButtonWidget saveProfile = ButtonWidget.icon(SpriteCommon.SETTINGS, () -> {
+    //ButtonWidget saveProfile = ButtonWidget.icon(SpriteCommon.SETTINGS, () -> {
       //TODO Load Profile, Open OptionScreen, Update Profile
-    });
+    //});
 
     ButtonWidget deleteProfile = ButtonWidget.icon(SpriteCommon.TRASH, () -> {
       this.profileController.deleteProfile(this.profile.id());
@@ -54,7 +54,7 @@ public class ProfileWidget extends HorizontalListWidget {
 
     buttons.addEntry(selectProfile);
     buttons.addEntry(renameButton);
-    buttons.addEntry(saveProfile);
+    //buttons.addEntry(saveProfile);
     buttons.addEntry(deleteProfile);
 
     this.addEntry(name);

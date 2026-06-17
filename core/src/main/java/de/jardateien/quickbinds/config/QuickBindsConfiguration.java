@@ -26,6 +26,8 @@ public class QuickBindsConfiguration extends AddonConfig {
     return new ProfileManagerActivity();
   }
 
+
+
   @Override
   public ConfigProperty<Boolean> enabled() {
     return this.enabled;
