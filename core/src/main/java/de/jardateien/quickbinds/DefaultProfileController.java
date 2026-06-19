@@ -83,16 +83,14 @@ public class DefaultProfileController implements ProfileController {
       return;
 
     try (Stream<Path> walker = Files.walk(this.profilePath(id))) {
-      walker.sorted(Comparator.reverseOrder())
-          .forEach(path -> {
-            try { Files.delete(path); }
-            catch (IOException e) { throw new RuntimeException(e); }
-          });
+      List<Path> sortedList = walker.sorted(Comparator.reverseOrder()).toList();
+      for(Path path : sortedList) {
+        Files.delete(path);
+      }
+      this.profiles.remove(profile);
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-
-    this.profiles.remove(profile);
   }
 
   @Override
@@ -120,15 +118,19 @@ public class DefaultProfileController implements ProfileController {
         for (Path path : stream) {
           if (!Files.isDirectory(path))
             continue;
+
           Path infoPath = path.resolve("info.json");
           if (!Files.exists(infoPath))
             continue;
 
           try (BufferedReader reader = Files.newBufferedReader(infoPath)) {
-            Profile profile = this.gson.fromJson(reader, Profile.class);
-            if (this.profiles.stream().anyMatch(p -> p.id().equals(profile.id())))
-              continue;
-            this.profiles.add(profile);
+            Profile jsonProfile = this.gson.fromJson(reader, Profile.class);
+            for(Profile profile : this.profiles) {
+              if(profile.id().equals(jsonProfile.id()))
+                break;
+            }
+
+            this.profiles.add(jsonProfile);
           }
         }
       } catch (IOException e) {

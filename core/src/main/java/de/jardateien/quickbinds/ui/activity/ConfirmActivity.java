@@ -10,14 +10,13 @@ import net.labymod.api.client.gui.screen.activity.types.TitledActivity;
 import net.labymod.api.client.gui.screen.widget.widgets.ComponentWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.input.ButtonWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.HorizontalListWidget;
+import org.jetbrains.annotations.NotNull;
 
 @Link("confirm.lss")
 @AutoActivity
 public class ConfirmActivity extends TitledActivity {
 
   private final Component description;
-  private final Component confirmText;
-  private final Component cancelText;
 
   private final Consumer<Boolean> responseConsumer;
   private boolean fired;
@@ -25,18 +24,15 @@ public class ConfirmActivity extends TitledActivity {
   protected ComponentWidget descriptionWidget;
   protected HorizontalListWidget buttonRow;
 
-  private ConfirmActivity(Component title, Component description, Consumer<Boolean> responseConsumer) {
+  private ConfirmActivity(@NotNull Component title, @NotNull Component description, @NotNull Consumer<Boolean> responseConsumer) {
     super(title);
 
     this.description = description;
-    this.confirmText = Component.translatable("gui.yes");
-    this.cancelText = Component.translatable("gui.no");
     this.responseConsumer = responseConsumer;
   }
 
   public static void confirm(Component title, Component description, Consumer<Boolean> responseConsumer) {
     ConfirmActivity activity = new ConfirmActivity(title, description, responseConsumer);
-
     Laby.labyAPI().minecraft().minecraftWindow().displayScreen(activity);
   }
 
@@ -53,8 +49,8 @@ public class ConfirmActivity extends TitledActivity {
     this.buttonRow = new HorizontalListWidget();
     this.buttonRow.addId("button-row");
 
-    this.buttonRow.addEntry(ButtonWidget.component(this.confirmText, () -> this.clicked(true)));
-    this.buttonRow.addEntry(ButtonWidget.component(this.cancelText, () -> this.clicked(false)));
+    this.buttonRow.addEntry(ButtonWidget.component(Component.translatable("gui.yes"), () -> this.clicked(true)));
+    this.buttonRow.addEntry(ButtonWidget.component(Component.translatable("gui.no"), () -> this.clicked(false)));
 
     super.document.addChild(this.buttonRow);
   }

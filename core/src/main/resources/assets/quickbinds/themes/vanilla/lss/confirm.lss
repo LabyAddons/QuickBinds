@@ -2,7 +2,7 @@
   top: 35%;
   alignment-x: center;
   max-width: 100%;
-  font-size: 1.2;
+  font-size: 1.3;
 }
 
 .description {

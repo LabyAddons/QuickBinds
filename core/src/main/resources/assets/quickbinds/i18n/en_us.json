@@ -16,7 +16,7 @@
     },
     "ui": {
       "confirm": {
-        "title": "Unsupported Version Conflict!",
+        "title": "Unsupported Version!",
         "description": "This Keybinds was created for an another Minecraft version. \nLoading this keys may have unexpected effects!"
       }
     },
