@@ -1,6 +1,11 @@
 {
   "quickbinds": {
     "settings": {
+      "joinDiscord": {
+        "name": "Discord Server",
+        "text": "Join",
+        "description": "Click to join the Discord"
+      },
       "keybind":{
         "name": "Profile QuickBinds Key"
       },
@@ -9,6 +14,7 @@
       },
       "profiles": {
         "name": "Profile QuickBinds List",
+        "text": "Profile",
         "button": {
           "tooltip": "You can create max. 13 Profiles"
         }
