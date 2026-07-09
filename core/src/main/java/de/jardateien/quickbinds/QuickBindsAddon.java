@@ -15,9 +15,7 @@ public class QuickBindsAddon extends LabyAddon<QuickBindsConfiguration> {
   protected void enable() {
     instance = this;
     this.registerSettingCategory();
-
     this.registerListener(new KeybindListener(this));
-    this.logger().info("Enabled the Addon");
   }
 
   @Override

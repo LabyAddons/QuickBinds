@@ -31,15 +31,13 @@ public class ProfileManagerActivity extends Activity {
       this.verticalListWidget.addChild(new ProfileWidget(profile, this));
     }
 
-    ButtonWidget buttonWidget = ButtonWidget.i18n("labymod.ui.button.add", () -> {
-      new EnterNamePopup((profile) -> {
-        if(profile.isBlank())
-          return;
+    ButtonWidget buttonWidget = ButtonWidget.i18n("labymod.ui.button.add", () -> new EnterNamePopup((profile) -> {
+      if(profile.isBlank())
+        return;
 
-        this.profileController.saveCurrentProfile(profile);
-        this.reload();
-      });
-    });
+      this.profileController.saveCurrentProfile(profile);
+      this.reload();
+    }));
 
     buttonWidget.setHoverComponent(Component.translatable("quickbinds.settings.profiles.button.tooltip"));
 
