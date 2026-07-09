@@ -1,6 +1,15 @@
 {
   "quickbinds": {
     "settings": {
+      "header": {
+        "general": {
+          "name": "General"
+        },
+        "profile": {
+          "name": "Profile"
+        }
+      },
+
       "joinDiscord": {
         "name": "Discord Server",
         "text": "Join",

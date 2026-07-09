@@ -10,23 +10,33 @@ import net.labymod.api.client.gui.screen.widget.widgets.input.ButtonWidget.Butto
 import net.labymod.api.client.gui.screen.widget.widgets.input.KeybindWidget.KeyBindSetting;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget.SwitchSetting;
 import net.labymod.api.configuration.loader.annotation.ConfigName;
+import net.labymod.api.configuration.loader.annotation.SpriteSlot;
+import net.labymod.api.configuration.loader.annotation.SpriteTexture;
 import net.labymod.api.configuration.loader.property.ConfigProperty;
+import net.labymod.api.configuration.settings.annotation.SettingSection;
 import net.labymod.api.util.MethodOrder;
 
 @ConfigName("settings")
+@SpriteTexture("settings.png")
 public class QuickBindsConfiguration extends AddonConfig {
 
+  @SettingSection(value = "general", center = true)
+  @SpriteSlot(x = 3)
   @SwitchSetting
   private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
+  @SpriteSlot
   @MethodOrder(after = "enabled")
   @ButtonSetting
   public void joinDiscord() {
     Laby.references().chatExecutor().openUrl("https://discord.gg/Mf7HtkqPZZ");
   }
 
+  @SettingSection(value = "profile", center = true)
+  @SpriteSlot(x = 1)
   @KeyBindSetting
   private final ConfigProperty<Key> keybind = new ConfigProperty<>(Key.NONE);
 
+  @SpriteSlot(x = 2)
   @MethodOrder(after = "keybind")
   @ActivitySetting
   public Activity profiles() {
