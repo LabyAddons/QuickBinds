@@ -9,7 +9,7 @@ group = "de.jardateien.quickbinds"
 version = providers.environmentVariable("VERSION").getOrElse("1.0.2")
 
 labyMod {
-    defaultPackageName = "de.jardateien.quickbinds" //change this to your main package name (used by all modules)
+    defaultPackageName = "de.jardateien.quickbinds"
 
     minecraft {
         registerVersion(versions.toTypedArray()) {

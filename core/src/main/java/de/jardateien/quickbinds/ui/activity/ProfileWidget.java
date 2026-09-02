@@ -34,14 +34,16 @@ public class ProfileWidget extends HorizontalListWidget {
 
     ButtonWidget selectProfile = ButtonWidget.icon(SpriteCommon.GREEN_CHECKED, () -> this.profileController.loadProfile(this.profile.id()));
     ButtonWidget renameButton = ButtonWidget.icon(SpriteCommon.PAINT, () ->
-        new EnterNamePopup(renameProfile -> {
-          if(renameProfile.isBlank())
+        EnterNamePopup.create(rename -> {
+          if(rename.isBlank())
             return;
 
-          this.profileController.renameProfile(this.profile.id(), renameProfile);
+          this.profileController.renameProfile(this.profile.id(), rename);
           this.activity.reload();
         })
     );
+
+    //ButtonWidget editProfile = ButtonWidget.icon(SpriteCommon.EDIT, () -> Laby.labyAPI().minecraft().minecraftWindow().displayScreen(new VanillaSettingsActivity()));
 
     ButtonWidget deleteProfile = ButtonWidget.icon(SpriteCommon.TRASH, () -> {
       this.profileController.deleteProfile(this.profile.id());
@@ -50,6 +52,7 @@ public class ProfileWidget extends HorizontalListWidget {
 
     buttons.addEntry(selectProfile);
     buttons.addEntry(renameButton);
+    //buttons.addEntry(editProfile);
     buttons.addEntry(deleteProfile);
 
     this.addEntry(name);

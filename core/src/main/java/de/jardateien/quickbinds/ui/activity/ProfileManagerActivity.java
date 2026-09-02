@@ -31,7 +31,7 @@ public class ProfileManagerActivity extends Activity {
       this.verticalListWidget.addChild(new ProfileWidget(profile, this));
     }
 
-    ButtonWidget buttonWidget = ButtonWidget.i18n("labymod.ui.button.add", () -> new EnterNamePopup((profile) -> {
+    ButtonWidget buttonWidget = ButtonWidget.i18n("labymod.ui.button.add", () -> EnterNamePopup.create(profile -> {
       if(profile.isBlank())
         return;
 

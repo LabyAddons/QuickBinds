@@ -11,7 +11,7 @@ import java.util.function.Consumer;
 @Link("name.lss")
 public class EnterNamePopup extends SimpleAdvancedPopup {
 
-  public EnterNamePopup(Consumer<String> rename) {
+  private EnterNamePopup(Consumer<String> rename) {
     super.title = Component.translatable("quickbinds.popup.rename.title");
 
     DivWidget inputContainer = new DivWidget();
@@ -31,4 +31,9 @@ public class EnterNamePopup extends SimpleAdvancedPopup {
 
     super.displayInOverlay();
   }
+
+  public static void create(Consumer<String> rename) {
+    new EnterNamePopup(rename);
+  }
+
 }

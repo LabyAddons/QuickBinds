@@ -20,7 +20,7 @@ import net.labymod.api.util.MethodOrder;
 @SpriteTexture("settings.png")
 public class QuickBindsConfiguration extends AddonConfig {
 
-  @SettingSection(value = "general", center = true)
+  @SettingSection(value = "general")
   @SpriteSlot(x = 3)
   @SwitchSetting
   private final ConfigProperty<Boolean> enabled = new ConfigProperty<>(true);
@@ -31,7 +31,7 @@ public class QuickBindsConfiguration extends AddonConfig {
     Laby.references().chatExecutor().openUrl("https://discord.gg/Mf7HtkqPZZ");
   }
 
-  @SettingSection(value = "profile", center = true)
+  @SettingSection(value = "profile")
   @SpriteSlot(x = 1)
   @KeyBindSetting
   private final ConfigProperty<Key> keybind = new ConfigProperty<>(Key.NONE);
@@ -42,6 +42,12 @@ public class QuickBindsConfiguration extends AddonConfig {
   public Activity profiles() {
     return new ProfileManagerActivity();
   }
+
+  @SettingSection(value = "settings")
+  @SwitchSetting
+  private final ConfigProperty<Boolean> history = new ConfigProperty<>(true);
+  @SwitchSetting
+  private final ConfigProperty<Boolean> hotbar = new ConfigProperty<>(true);
 
   @Override
   public ConfigProperty<Boolean> enabled() {
