@@ -65,6 +65,7 @@ public class DefaultProfileController implements ProfileController {
     try {
       Files.createDirectories(directory);
       Files.copy(this.minecraftOptions, directory.resolve("options.txt"), StandardCopyOption.REPLACE_EXISTING);
+
       Path infoJson = directory.resolve("info.json");
       boolean fileCreated = infoJson.toFile().createNewFile();
       if (fileCreated)
@@ -94,16 +95,14 @@ public class DefaultProfileController implements ProfileController {
   }
 
   @Override
-  public void renameProfile(UUID id, String name) {
-    Path infoJsonPath = this.profilePath(id).resolve("info.json");
-    if (!Files.exists(infoJsonPath))
-      return;
-
-    Profile profile = this.profile(id);
+  public void updateProfile(Profile profile) {
     if(profile == null)
       return;
 
-    profile.setName(name);
+    Path infoJsonPath = this.profilePath(profile.id()).resolve("info.json");
+    if (!Files.exists(infoJsonPath))
+      return;
+
     try {
       Files.writeString(infoJsonPath, this.gson.toJson(profile), StandardCharsets.UTF_8);
     } catch (IOException e) {

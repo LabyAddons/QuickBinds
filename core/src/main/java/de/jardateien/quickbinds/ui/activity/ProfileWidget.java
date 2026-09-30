@@ -9,6 +9,7 @@ import net.labymod.api.client.gui.lss.property.annotation.AutoWidget;
 import net.labymod.api.client.gui.screen.Parent;
 import net.labymod.api.client.gui.screen.widget.widgets.ComponentWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.input.ButtonWidget;
+import net.labymod.api.client.gui.screen.widget.widgets.input.KeybindWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.HorizontalListWidget;
 
 @AutoWidget
@@ -38,10 +39,17 @@ public class ProfileWidget extends HorizontalListWidget {
           if(rename.isBlank())
             return;
 
-          this.profileController.renameProfile(this.profile.id(), rename);
+          this.profile.setName(rename);
+          this.profileController.updateProfile(this.profile);
           this.activity.reload();
         })
     );
+
+    KeybindWidget keybind = new KeybindWidget(value -> {
+        this.profile.setKey(value);
+        this.profileController.updateProfile(this.profile);
+        this.activity.reload();
+    });
 
     //ButtonWidget editProfile = ButtonWidget.icon(SpriteCommon.EDIT, () -> Laby.labyAPI().minecraft().minecraftWindow().displayScreen(new VanillaSettingsActivity()));
 
@@ -50,6 +58,7 @@ public class ProfileWidget extends HorizontalListWidget {
       this.activity.reload();
     });
 
+    buttons.addEntry(keybind);
     buttons.addEntry(selectProfile);
     buttons.addEntry(renameButton);
     //buttons.addEntry(editProfile);
