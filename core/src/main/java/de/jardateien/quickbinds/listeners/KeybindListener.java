@@ -4,13 +4,9 @@ import de.jardateien.quickbinds.QuickBindsAddon;
 import de.jardateien.quickbinds.api.Profile;
 import de.jardateien.quickbinds.api.ProfileController;
 import de.jardateien.quickbinds.config.QuickBindsConfiguration;
-import net.labymod.api.Laby;
 import net.labymod.api.client.gui.screen.key.Key;
 import net.labymod.api.event.Subscribe;
-import net.labymod.api.event.addon.lifecycle.AddonEnableEvent;
 import net.labymod.api.event.client.input.KeyEvent;
-import net.labymod.api.event.client.lifecycle.ShutdownEvent;
-import net.labymod.api.event.client.session.SessionUpdateEvent;
 
 public class KeybindListener {
 
@@ -38,11 +34,6 @@ public class KeybindListener {
 
       this.profileController.loadProfile(profile.id());
     }
-  }
-
-  @Subscribe
-  public void onSessionUpdate(SessionUpdateEvent updateEvent) {
-
   }
 
 }

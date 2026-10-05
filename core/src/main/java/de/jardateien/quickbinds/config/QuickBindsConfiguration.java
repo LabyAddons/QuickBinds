@@ -28,7 +28,7 @@ public class QuickBindsConfiguration extends AddonConfig {
   @MethodOrder(after = "enabled")
   @ButtonSetting
   public void joinDiscord() {
-    Laby.references().chatExecutor().openUrl("https://discord.gg/Mf7HtkqPZZ");
+    Laby.references().chatExecutor().openUrl("https://discord.gg/NQPQGRkFYG");
   }
 
   @SettingSection(value = "profile")
@@ -43,12 +43,6 @@ public class QuickBindsConfiguration extends AddonConfig {
     return new ProfileManagerActivity();
   }
 
-  @SettingSection(value = "settings")
-  @SwitchSetting
-  private final ConfigProperty<Boolean> history = new ConfigProperty<>(true);
-  @SwitchSetting
-  private final ConfigProperty<Boolean> hotbar = new ConfigProperty<>(true);
-
   @Override
   public ConfigProperty<Boolean> enabled() {
     return this.enabled;
@@ -57,5 +51,4 @@ public class QuickBindsConfiguration extends AddonConfig {
   public ConfigProperty<Key> keybind() {
     return this.keybind;
   }
-
 }
