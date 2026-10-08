@@ -1,14 +1,17 @@
-package de.jardateien.quickbinds.v1_21_10;
+package de.jardateien.quickbinds.v1_21_1;
 
 import de.jardateien.quickbinds.api.SettingController;
-import net.labymod.api.models.Implements;
-import net.minecraft.client.Minecraft;
-import javax.inject.Singleton;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
+import javax.inject.Singleton;
+import net.labymod.api.models.Implements;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.Options;
+import net.minecraft.server.packs.repository.PackRepository;
 
 @Singleton
 @Implements(SettingController.class)
@@ -22,7 +25,19 @@ public class VersionedSettingController implements SettingController {
     } catch (IOException e) {
       throw new RuntimeException(e);
     }
-    Minecraft.getInstance().options.load();
-    Minecraft.getInstance().options.save();
+
+    Minecraft minecraft = Minecraft.getInstance();
+    Options options = minecraft.options;
+    PackRepository resourcePackRepository = minecraft.getResourcePackRepository();
+    List<String> previousResourcePacks = new ArrayList<>(resourcePackRepository.getSelectedIds());
+
+    options.load();
+    resourcePackRepository.reload();
+    options.loadSelectedResourcePacks(resourcePackRepository);
+    options.save();
+
+    if(!previousResourcePacks.equals(new ArrayList<>(resourcePackRepository.getSelectedIds()))) {
+      minecraft.reloadResourcePacks();
+    }
   }
 }

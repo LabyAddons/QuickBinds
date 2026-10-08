@@ -3,7 +3,7 @@ package de.jardateien.quickbinds.ui.activity;
 import de.jardateien.quickbinds.QuickBindsAddon;
 import de.jardateien.quickbinds.api.Profile;
 import de.jardateien.quickbinds.api.ProfileController;
-import de.jardateien.quickbinds.ui.popup.EnterNamePopup;
+import de.jardateien.quickbinds.ui.popup.EnterNameCheckboxPopup;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.screen.Parent;
 import net.labymod.api.client.gui.screen.activity.Activity;
@@ -31,13 +31,17 @@ public class ProfileManagerActivity extends Activity {
       this.verticalListWidget.addChild(new ProfileWidget(profile, this));
     }
 
-    ButtonWidget buttonWidget = ButtonWidget.i18n("labymod.ui.button.add", () -> EnterNamePopup.create(profile -> {
-      if(profile.isBlank())
-        return;
+    ButtonWidget buttonWidget = ButtonWidget.i18n("labymod.ui.button.add", () ->
+        EnterNameCheckboxPopup.create()
+            .title(Component.translatable("quickbinds.popup.rename.title"))
+            .open(result -> {
+              String name = result.name();
+              if(name.isBlank())
+                return;
 
-      this.profileController.saveCurrentProfile(profile);
-      this.reload();
-    }));
+              this.profileController.saveCurrentProfile(name);
+              this.reload();
+            }));
 
     buttonWidget.setHoverComponent(Component.translatable("quickbinds.settings.profiles.button.tooltip"));
 

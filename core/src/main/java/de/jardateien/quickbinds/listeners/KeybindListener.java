@@ -26,10 +26,7 @@ public class KeybindListener {
 
     for (Profile profile : this.profileController.profiles()) {
       Key key = profile.key();
-      if(key == null || key.isUnknown())
-        continue;
-
-      if (!key.isPressed())
+      if(key == null || key.isUnknown() || !key.isPressed())
         continue;
 
       this.profileController.loadProfile(profile.id());

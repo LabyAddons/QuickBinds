@@ -47,7 +47,6 @@ public class ProfileWidget extends HorizontalListWidget {
     );
 
     KeybindWidget keybind = new KeybindWidget(value -> {
-        // The widget also reports the key it was initialized with, only save real changes
         if (value == null || value.equals(this.profile.key()))
           return;
 
