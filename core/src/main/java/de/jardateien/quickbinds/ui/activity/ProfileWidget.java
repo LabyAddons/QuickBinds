@@ -5,6 +5,7 @@ import de.jardateien.quickbinds.api.Profile;
 import de.jardateien.quickbinds.api.ProfileController;
 import de.jardateien.quickbinds.ui.popup.EnterNamePopup;
 import net.labymod.api.Textures.SpriteCommon;
+import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.lss.property.annotation.AutoWidget;
 import net.labymod.api.client.gui.screen.Parent;
 import net.labymod.api.client.gui.screen.widget.widgets.ComponentWidget;
@@ -46,18 +47,20 @@ public class ProfileWidget extends HorizontalListWidget {
     );
 
     KeybindWidget keybind = new KeybindWidget(value -> {
+        // The widget also reports the key it was initialized with, only save real changes
+        if (value == null || value.equals(this.profile.key()))
+          return;
+
         this.profile.setKey(value);
         this.profileController.updateProfile(this.profile);
         this.activity.reload();
     });
+    keybind.addId("profile-keybind");
+    keybind.setKeyUpdater(this.profile::key);
+    keybind.setHoverComponent(Component.translatable("quickbinds.ui.profile.keybind"));
 
-    ButtonWidget editProfile = ButtonWidget.icon(SpriteCommon.EDIT, () -> {
-      this.profileController.deleteProfile(this.profile.id());
-      this.profileController.saveCurrentProfile(this.profile.name());
-      this.profileController.profiles().remove(this.profile);
-
-      this.activity.reload();
-    });
+    ButtonWidget editProfile = ButtonWidget.icon(SpriteCommon.EDIT, () -> ProfileOptionsActivity.open(this.profile));
+    editProfile.setHoverComponent(Component.translatable("quickbinds.ui.options.edit"));
 
     ButtonWidget deleteProfile = ButtonWidget.icon(SpriteCommon.TRASH, () -> {
       this.profileController.deleteProfile(this.profile.id());

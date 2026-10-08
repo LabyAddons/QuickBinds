@@ -33,6 +33,67 @@
       "confirm": {
         "title": "Unsupported Version!",
         "description": "This Keybinds was created for an another Minecraft version. \nLoading this keys may have unexpected effects!"
+      },
+      "profile": {
+        "keybind": "Key to load this profile while holding the Profile QuickBinds Key"
+      },
+      "options": {
+        "edit": "Edit Profile Options",
+        "title": "Profile Options - %s",
+        "search": "Search options...",
+        "hint": "Click a key to rebind it, ESC unassigns it. Yellow = changed, red = conflict",
+        "menuHint": "Changes are only saved to this profile when you press Done",
+        "sectionTitle": "%s - %s",
+        "count": "%s options in this profile",
+        "version": "This profile was created for Minecraft %s, some keys may not be recognized.",
+        "empty": "No options match your search.",
+        "revert": "Undo change",
+        "cancel": "Cancel",
+        "done": "Done",
+        "back": "Back",
+        "conflict": "This key is also used by: %s",
+        "invalid": "Unknown value in the profile: %s",
+        "slider": {
+          "auto": "Auto",
+          "unlimited": "Unlimited"
+        },
+        "section": {
+          "controls": "Controls (Key Binds)",
+          "mouse": "Mouse Settings",
+          "video": "Video Settings",
+          "sound": "Music & Sounds",
+          "chat": "Chat Settings",
+          "skin": "Skin Customization",
+          "accessibility": "Accessibility",
+          "other": "Other"
+        },
+        "category": {
+          "controlOptions": "Control Options",
+          "movement": "Movement",
+          "gameplay": "Gameplay",
+          "inventory": "Inventory",
+          "creative": "Creative Mode",
+          "multiplayer": "Multiplayer",
+          "miscellaneous": "Miscellaneous",
+          "otherKeys": "Other Keybinds",
+          "video": "Video Settings",
+          "sound": "Music & Sounds",
+          "mouse": "Mouse Settings",
+          "chat": "Chat Settings",
+          "skin": "Skin Customization",
+          "accessibility": "Accessibility",
+          "resourcePacks": "Resource Packs",
+          "general": "General",
+          "other": "Other"
+        },
+        "error": {
+          "missing": "This profile has no options.txt.",
+          "load": "The options.txt of this profile could not be read.",
+          "save": {
+            "title": "Saving failed",
+            "description": "The options.txt of this profile could not be saved:\n%s"
+          }
+        }
       }
     },
     "popup": {

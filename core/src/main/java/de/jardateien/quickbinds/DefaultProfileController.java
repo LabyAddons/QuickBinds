@@ -3,6 +3,7 @@ package de.jardateien.quickbinds;
 import com.google.gson.Gson;
 import de.jardateien.quickbinds.api.Profile;
 import de.jardateien.quickbinds.api.ProfileController;
+import de.jardateien.quickbinds.api.ProfileOptions;
 import de.jardateien.quickbinds.ui.activity.ConfirmActivity;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
@@ -11,8 +12,10 @@ import javax.inject.Singleton;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
@@ -111,6 +114,27 @@ public class DefaultProfileController implements ProfileController {
   }
 
   @Override
+  public ProfileOptions loadOptions(UUID id) throws IOException {
+    // ISO-8859-1 maps every byte to one char, so untouched lines are written back byte for byte
+    return new ProfileOptions(Files.readAllLines(this.optionsPath(id), StandardCharsets.ISO_8859_1));
+  }
+
+  @Override
+  public void saveOptions(UUID id, ProfileOptions options) throws IOException {
+    Path optionPath = this.optionsPath(id);
+    if (!Files.exists(optionPath))
+      throw new NoSuchFileException(optionPath.toString());
+
+    Path tempPath = optionPath.resolveSibling("options.txt.tmp");
+    Files.write(tempPath, options.lines(), StandardCharsets.ISO_8859_1);
+    try {
+      Files.move(tempPath, optionPath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+    } catch (AtomicMoveNotSupportedException e) {
+      Files.move(tempPath, optionPath, StandardCopyOption.REPLACE_EXISTING);
+    }
+  }
+
+  @Override
   public List<Profile> profiles() {
     if (this.profiles.isEmpty()) {
       try (DirectoryStream<Path> stream = Files.newDirectoryStream(this.profilesPath())) {
@@ -160,6 +184,10 @@ public class DefaultProfileController implements ProfileController {
 
   private Path profilePath(UUID id) {
     return this.profilesPath().resolve(id.toString());
+  }
+
+  private Path optionsPath(UUID id) {
+    return this.profilePath(id).resolve("options.txt");
   }
 
   private Profile profile(UUID id) {

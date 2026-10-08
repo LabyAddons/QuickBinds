@@ -2,18 +2,31 @@
 
   width: 100%;
   height: 100%;
+  space-between-entries: 2;
 
   Profile {
     height: 20;
+
+    .profile-name {
+      top: 50%;
+      alignment-y: center;
+    }
 
     .buttons {
       alignment: right;
       height: 100%;
       width: fit-content;
+      space-between-entries: 2;
 
       Button {
         width: 20;
         height: 20;
+      }
+
+      .profile-keybind {
+        width: 80;
+        height: 20;
+        text-alignment-x: center;
       }
     }
   }

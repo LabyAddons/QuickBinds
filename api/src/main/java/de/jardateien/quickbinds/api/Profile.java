@@ -36,6 +36,14 @@ public class Profile {
   }
 
   public Key key() {
+    if (this.key == null)
+      return Key.NONE;
+
+    // Gson creates a new Key instance (and loses the MouseButton type), use the registered one instead
+    Key registered = Key.getByName(this.key.getActualName());
+    if (registered != null && registered != this.key) {
+      this.key = registered;
+    }
     return this.key;
   }
 
