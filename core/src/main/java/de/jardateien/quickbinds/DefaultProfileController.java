@@ -133,6 +133,8 @@ public class DefaultProfileController implements ProfileController {
       Files.move(tempPath, optionPath, StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
     } catch (AtomicMoveNotSupportedException e) {
       Files.move(tempPath, optionPath, StandardCopyOption.REPLACE_EXISTING);
+    } finally {
+      Files.deleteIfExists(tempPath);
     }
   }
 
