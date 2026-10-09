@@ -1,4 +1,4 @@
-package de.jardateien.quickbinds.ui.activity;
+package de.jardateien.quickbinds.ui.activity.options;
 
 /**
  * The buttons of the profile options menu, ordered like the vanilla options screen (two per row).

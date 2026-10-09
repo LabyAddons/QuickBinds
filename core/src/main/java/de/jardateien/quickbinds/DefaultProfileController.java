@@ -48,13 +48,16 @@ public class DefaultProfileController implements ProfileController {
     Profile profile = this.profile(id);
     assert profile != null;
 
-    if(profile.protocol() != this.protocol) {
-      ConfirmActivity.confirm(Component.translatable("quickbinds.ui.confirm.title"), Component.translatable("quickbinds.ui.confirm.description"), result -> {
-        if(result == true) {
-          QuickBindsAddon.referenceStorage().settingController().save(optionPath);
-        }
-      });
+    if(profile.protocol() != this.protocol && QuickBindsAddon.instance.configuration().confirmLoad().get()) {
+      ConfirmActivity.confirm(
+          Component.translatable("quickbinds.ui.confirm.title"),
+          Component.translatable("quickbinds.ui.confirm.description"),
+          result -> {
+            if(result == null || !result)
+              return;
 
+            QuickBindsAddon.referenceStorage().settingController().save(optionPath);
+          });
       return;
     }
 
@@ -115,7 +118,6 @@ public class DefaultProfileController implements ProfileController {
 
   @Override
   public ProfileOptions loadOptions(UUID id) throws IOException {
-    // ISO-8859-1 maps every byte to one char, so untouched lines are written back byte for byte
     return new ProfileOptions(Files.readAllLines(this.optionsPath(id), StandardCharsets.ISO_8859_1));
   }
 

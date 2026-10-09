@@ -1,4 +1,4 @@
-package de.jardateien.quickbinds.ui.activity;
+package de.jardateien.quickbinds.ui.activity.options;
 
 import net.labymod.api.Textures.SpriteCommon;
 import net.labymod.api.client.component.Component;

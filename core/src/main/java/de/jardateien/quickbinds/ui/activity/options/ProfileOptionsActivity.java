@@ -1,4 +1,4 @@
-package de.jardateien.quickbinds.ui.activity;
+package de.jardateien.quickbinds.ui.activity.options;
 
 import de.jardateien.quickbinds.QuickBindsAddon;
 import de.jardateien.quickbinds.api.KeyMappingController;
@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Objects;
 
 /**
  * Edits all options of one QuickBinds profile, split into the sections of the vanilla options screen. The profile's own options.txt (see
@@ -287,7 +288,7 @@ public class ProfileOptionsActivity extends Activity {
 
       for (int j = i + 1; j < size; j++) {
         OptionEntry other = this.entries.get(j);
-        if (!other.isAssigned() || !entry.key().equals(other.key()))
+        if (!other.isAssigned() || !Objects.equals(entry.key(), other.key()))
           continue;
 
         entry.conflicts().add(other);
@@ -327,17 +328,14 @@ public class ProfileOptionsActivity extends Activity {
   }
 
   private static boolean isValid(OptionEntry.Type type, String value) {
-    switch (type) {
-      case INTEGER:
-        return OptionEntry.INTEGER_VALUE.matcher(value).matches();
-      case DECIMAL:
-        return OptionEntry.INTEGER_VALUE.matcher(value).matches() || OptionEntry.DECIMAL_VALUE.matcher(value).matches();
-      case READ_ONLY:
-      case KEYBIND:
-        return false;
-      default:
-        return true;
-    }
+    return switch (type) {
+      case INTEGER -> OptionEntry.INTEGER_VALUE.matcher(value).matches();
+      case DECIMAL ->
+          OptionEntry.INTEGER_VALUE.matcher(value).matches() || OptionEntry.DECIMAL_VALUE.matcher(
+              value).matches();
+      case READ_ONLY, KEYBIND -> false;
+      default -> true;
+    };
   }
 
   /**
@@ -377,7 +375,7 @@ public class ProfileOptionsActivity extends Activity {
       }
 
       if (upperCase || (Character.isUpperCase(character) && Character.isLowerCase(previous))) {
-        if (name.length() > 0) {
+        if (!name.isEmpty()) {
           name.append(' ');
         }
         character = Character.toUpperCase(character);

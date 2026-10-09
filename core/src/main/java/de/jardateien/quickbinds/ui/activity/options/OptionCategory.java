@@ -1,4 +1,4 @@
-package de.jardateien.quickbinds.ui.activity;
+package de.jardateien.quickbinds.ui.activity.options;
 
 import java.util.HashMap;
 import java.util.Map;

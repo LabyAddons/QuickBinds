@@ -1,4 +1,4 @@
-package de.jardateien.quickbinds.ui.activity;
+package de.jardateien.quickbinds.ui.activity.options;
 
 import net.labymod.api.client.gui.screen.key.Key;
 import org.jetbrains.annotations.Nullable;

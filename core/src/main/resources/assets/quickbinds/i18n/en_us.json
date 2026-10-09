@@ -2,6 +2,9 @@
   "quickbinds": {
     "settings": {
       "header": {
+        "settings": {
+          "name": "Settings"
+        },
         "general": {
           "name": "General"
         },
@@ -27,9 +30,21 @@
         "button": {
           "tooltip": "You can create max. 13 Profiles"
         }
+      },
+      "confirmLoad": {
+        "name": "Apply load Profile!",
+        "description": "Apply the selected profile to Load."
+      },
+      "confirmDelete": {
+        "name": "Apply delete Profile!",
+        "description": "Apply the selected profile to Delete."
       }
     },
     "ui": {
+      "delete": {
+        "title": "Delete This Profile?",
+        "description": "Are you sure you want to delete this profile? \nAll settings saved in this profile will be permanently removed."
+      },
       "confirm": {
         "title": "Unsupported Version!",
         "description": "This Keybinds was created for an another Minecraft version. \nLoading this keys may have unexpected effects!"

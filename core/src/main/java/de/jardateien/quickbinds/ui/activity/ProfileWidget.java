@@ -3,6 +3,7 @@ package de.jardateien.quickbinds.ui.activity;
 import de.jardateien.quickbinds.QuickBindsAddon;
 import de.jardateien.quickbinds.api.Profile;
 import de.jardateien.quickbinds.api.ProfileController;
+import de.jardateien.quickbinds.ui.activity.options.ProfileOptionsActivity;
 import de.jardateien.quickbinds.ui.popup.EnterNamePopup;
 import net.labymod.api.Textures.SpriteCommon;
 import net.labymod.api.client.component.Component;
@@ -54,6 +55,7 @@ public class ProfileWidget extends HorizontalListWidget {
         this.profileController.updateProfile(this.profile);
         this.activity.reload();
     });
+
     keybind.addId("profile-keybind");
     keybind.setKeyUpdater(this.profile::key);
     keybind.setHoverComponent(Component.translatable("quickbinds.ui.profile.keybind"));
@@ -62,8 +64,21 @@ public class ProfileWidget extends HorizontalListWidget {
     editProfile.setHoverComponent(Component.translatable("quickbinds.ui.options.edit"));
 
     ButtonWidget deleteProfile = ButtonWidget.icon(SpriteCommon.TRASH, () -> {
-      this.profileController.deleteProfile(this.profile.id());
-      this.activity.reload();
+      if(QuickBindsAddon.instance.configuration().confirmDelete().get()) {
+        ConfirmActivity.confirm(
+            Component.translatable("quickbinds.ui.delete.title"),
+            Component.translatable("quickbinds.ui.delete.description"),
+            result -> {
+              if(result == null || !result)
+                return;
+
+              this.deleteProfile();
+            });
+
+        return;
+      }
+
+      this.deleteProfile();
     });
 
     buttons.addEntry(keybind);
@@ -74,5 +89,10 @@ public class ProfileWidget extends HorizontalListWidget {
 
     this.addEntry(name);
     this.addEntry(buttons);
+  }
+
+  private void deleteProfile() {
+    this.profileController.deleteProfile(this.profile.id());
+    this.activity.reload();
   }
 }

@@ -43,12 +43,27 @@ public class QuickBindsConfiguration extends AddonConfig {
     return new ProfileManagerActivity();
   }
 
+  @SettingSection(value = "settings")
+  @SpriteSlot(x = 5)
+  @SwitchSetting
+  private final ConfigProperty<Boolean> confirmDelete = new ConfigProperty<>(true);
+  @SpriteSlot(x = 4)
+  @SwitchSetting
+  private final ConfigProperty<Boolean> confirmLoad = new ConfigProperty<>(true);
+
   @Override
   public ConfigProperty<Boolean> enabled() {
     return this.enabled;
   }
-
   public ConfigProperty<Key> keybind() {
     return this.keybind;
+  }
+
+  public ConfigProperty<Boolean> confirmDelete() {
+    return this.confirmDelete;
+  }
+
+  public ConfigProperty<Boolean> confirmLoad() {
+    return this.confirmLoad;
   }
 }
