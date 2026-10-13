@@ -35,8 +35,8 @@ public class ProfileWidget extends HorizontalListWidget {
     HorizontalListWidget buttons = new HorizontalListWidget();
     buttons.addId("buttons");
 
-    ButtonWidget selectProfile = ButtonWidget.icon(IconsCommon.CHECKBOX_CHECKED, () -> this.profileController.loadProfile(this.profile.id()));
-    ButtonWidget renameButton = ButtonWidget.icon(IconsCursor.PEN, () ->
+    ButtonWidget selectProfile = ButtonWidget.icon(SpriteCommon.GREEN_CHECKED, () -> this.profileController.loadProfile(this.profile.id()));
+    ButtonWidget renameButton = ButtonWidget.icon(SpriteCommon.PAINT, () ->
         EnterNamePopup.create(rename -> {
           if(rename.isBlank())
             return;
