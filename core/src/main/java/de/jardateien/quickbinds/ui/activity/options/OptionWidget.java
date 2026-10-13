@@ -134,7 +134,7 @@ public class OptionWidget extends HorizontalListWidget {
     } else if (!conflicts.isEmpty()) {
       StringBuilder names = new StringBuilder();
       for (OptionEntry conflict : conflicts) {
-        if (names.length() > 0) {
+        if (!names.isEmpty()) {
           names.append(", ");
         }
         names.append(conflict.name());

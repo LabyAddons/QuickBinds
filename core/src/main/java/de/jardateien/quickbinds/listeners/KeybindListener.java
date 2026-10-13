@@ -7,6 +7,7 @@ import de.jardateien.quickbinds.config.QuickBindsConfiguration;
 import net.labymod.api.client.gui.screen.key.Key;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.input.KeyEvent;
+import net.labymod.api.event.client.input.KeyEvent.State;
 
 public class KeybindListener {
 
@@ -20,13 +21,16 @@ public class KeybindListener {
 
   @Subscribe
   public void onKeyPressed(final KeyEvent keyEvent) {
+    if(!this.config.enabled().get() || keyEvent.state() != State.PRESS)
+      return;
+
     Key settingKey = this.config.keybind().get();
     if(settingKey == null || settingKey.isUnknown() || !settingKey.isPressed())
       return;
 
     for (Profile profile : this.profileController.profiles()) {
       Key key = profile.key();
-      if(key == null || key.isUnknown() || !key.isPressed())
+      if(key == null || key.isUnknown() || !key.equals(keyEvent.key()))
         continue;
 
       this.profileController.loadProfile(profile.id());

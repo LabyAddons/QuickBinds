@@ -8,22 +8,24 @@ import de.jardateien.quickbinds.ui.activity.ConfirmActivity;
 import net.labymod.api.Laby;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.models.Implements;
+import org.jetbrains.annotations.NotNull;
 import javax.inject.Singleton;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.AtomicMoveNotSupportedException;
 import java.nio.file.DirectoryStream;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Stream;
 
 @Singleton
 @Implements(ProfileController.class)
@@ -89,11 +91,23 @@ public class DefaultProfileController implements ProfileController {
     if(profile == null)
       return;
 
-    try (Stream<Path> walker = Files.walk(this.profilePath(id))) {
-      List<Path> sortedList = walker.sorted(Comparator.reverseOrder()).toList();
-      for(Path path : sortedList) {
-        Files.delete(path);
-      }
+    try {
+      Files.walkFileTree(this.profilePath(id), new SimpleFileVisitor<>() {
+        @Override
+        public @NotNull FileVisitResult visitFile(@NotNull Path file, @NotNull BasicFileAttributes attrs) throws IOException {
+          Files.delete(file);
+          return FileVisitResult.CONTINUE;
+        }
+
+        @Override
+        public @NotNull FileVisitResult postVisitDirectory(@NotNull Path dir, IOException exc) throws IOException {
+          if (exc != null)
+            throw exc;
+
+          Files.delete(dir);
+          return FileVisitResult.CONTINUE;
+        }
+      });
       this.profiles.remove(profile);
     } catch (IOException e) {
       throw new RuntimeException(e);
