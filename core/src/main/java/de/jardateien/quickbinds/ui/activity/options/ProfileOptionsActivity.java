@@ -25,6 +25,7 @@ import net.labymod.api.client.gui.screen.widget.widgets.layout.list.HorizontalLi
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.VerticalListWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.popup.SimpleAdvancedPopup;
 import net.labymod.api.client.gui.screen.widget.widgets.popup.SimpleAdvancedPopup.SimplePopupButton;
+import net.labymod.api.client.gui.tooltip.Tooltip;
 import net.labymod.api.util.I18n;
 import java.io.IOException;
 import java.nio.file.NoSuchFileException;
@@ -177,7 +178,7 @@ public class ProfileOptionsActivity extends Activity {
 
     ButtonWidget button = ButtonWidget.component(text, () -> this.openSection(section));
     button.addId("menu-button");
-    button.setHoverComponent(Component.translatable("quickbinds.ui.options.count", Component.text(count)));
+    button.tooltip(Tooltip.text(Component.translatable("quickbinds.ui.options.count", Component.text(count))));
     button.setEnabled(count > 0);
     return button;
   }

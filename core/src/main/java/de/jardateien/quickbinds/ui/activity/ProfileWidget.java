@@ -5,7 +5,9 @@ import de.jardateien.quickbinds.api.Profile;
 import de.jardateien.quickbinds.api.ProfileController;
 import de.jardateien.quickbinds.ui.activity.options.ProfileOptionsActivity;
 import de.jardateien.quickbinds.ui.popup.EnterNamePopup;
-import net.labymod.api.Textures.SpriteCommon;
+import net.labymod.api.client.gui.icon.catalog.IconsCommon;
+import net.labymod.api.client.gui.icon.catalog.IconsCursor;
+import net.labymod.api.client.gui.icon.catalog.IconsScreenshot;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.gui.lss.property.annotation.AutoWidget;
 import net.labymod.api.client.gui.screen.Parent;
@@ -13,6 +15,7 @@ import net.labymod.api.client.gui.screen.widget.widgets.ComponentWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.input.ButtonWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.input.KeybindWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.HorizontalListWidget;
+import net.labymod.api.client.gui.tooltip.Tooltip;
 
 @AutoWidget
 public class ProfileWidget extends HorizontalListWidget {
@@ -35,8 +38,8 @@ public class ProfileWidget extends HorizontalListWidget {
     HorizontalListWidget buttons = new HorizontalListWidget();
     buttons.addId("buttons");
 
-    ButtonWidget selectProfile = ButtonWidget.icon(SpriteCommon.GREEN_CHECKED, () -> this.profileController.loadProfile(this.profile.id()));
-    ButtonWidget renameButton = ButtonWidget.icon(SpriteCommon.PAINT, () ->
+    ButtonWidget selectProfile = ButtonWidget.icon(IconsCommon.CHECKBOX_CHECKED, () -> this.profileController.loadProfile(this.profile.id()));
+    ButtonWidget renameButton = ButtonWidget.icon(IconsCursor.PEN, () ->
         EnterNamePopup.create(rename -> {
           if(rename.isBlank())
             return;
@@ -58,12 +61,12 @@ public class ProfileWidget extends HorizontalListWidget {
 
     keybind.addId("profile-keybind");
     keybind.setKeyUpdater(this.profile::key);
-    keybind.setHoverComponent(Component.translatable("quickbinds.ui.profile.keybind"));
+    keybind.tooltip(Tooltip.text(Component.translatable("quickbinds.ui.profile.keybind")));
 
-    ButtonWidget editProfile = ButtonWidget.icon(SpriteCommon.EDIT, () -> ProfileOptionsActivity.open(this.profile));
-    editProfile.setHoverComponent(Component.translatable("quickbinds.ui.options.edit"));
+    ButtonWidget editProfile = ButtonWidget.icon(IconsScreenshot.EDIT, () -> ProfileOptionsActivity.open(this.profile));
+    editProfile.tooltip(Tooltip.text(Component.translatable("quickbinds.ui.options.edit")));
 
-    ButtonWidget deleteProfile = ButtonWidget.icon(SpriteCommon.TRASH, () -> {
+    ButtonWidget deleteProfile = ButtonWidget.icon(IconsCommon.TRASH, () -> {
       if(QuickBindsAddon.instance.configuration().confirmDelete().get()) {
         ConfirmActivity.confirm(
             Component.translatable("quickbinds.ui.delete.title"),

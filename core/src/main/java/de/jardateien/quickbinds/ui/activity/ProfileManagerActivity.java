@@ -11,6 +11,7 @@ import net.labymod.api.client.gui.screen.activity.AutoActivity;
 import net.labymod.api.client.gui.screen.activity.Link;
 import net.labymod.api.client.gui.screen.widget.widgets.input.ButtonWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.VerticalListWidget;
+import net.labymod.api.client.gui.tooltip.Tooltip;
 
 @Link("profile-manager.lss")
 @AutoActivity
@@ -43,7 +44,7 @@ public class ProfileManagerActivity extends Activity {
               this.reload();
             }));
 
-    buttonWidget.setHoverComponent(Component.translatable("quickbinds.settings.profiles.button.tooltip"));
+    buttonWidget.tooltip(Tooltip.text(Component.translatable("quickbinds.settings.profiles.button.tooltip")));
 
     if(this.profileController.profiles().size() >= 14) {
       buttonWidget.setEnabled(false);

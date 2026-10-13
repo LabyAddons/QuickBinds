@@ -1,6 +1,6 @@
 package de.jardateien.quickbinds.ui.activity.options;
 
-import net.labymod.api.Textures.SpriteCommon;
+import net.labymod.api.client.gui.icon.catalog.IconsCommon;
 import net.labymod.api.client.component.Component;
 import net.labymod.api.client.component.format.NamedTextColor;
 import net.labymod.api.client.gui.lss.property.annotation.AutoWidget;
@@ -13,6 +13,7 @@ import net.labymod.api.client.gui.screen.widget.widgets.input.SliderWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.input.SwitchWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.input.TextFieldWidget;
 import net.labymod.api.client.gui.screen.widget.widgets.layout.list.HorizontalListWidget;
+import net.labymod.api.client.gui.tooltip.Tooltip;
 import java.util.List;
 
 @AutoWidget
@@ -45,9 +46,9 @@ public class OptionWidget extends HorizontalListWidget {
     HorizontalListWidget controls = new HorizontalListWidget();
     controls.addId("option-controls");
 
-    this.revertButton = ButtonWidget.icon(SpriteCommon.REFRESH, () -> this.activity.revert(this));
+    this.revertButton = ButtonWidget.icon(IconsCommon.REFRESH, () -> this.activity.revert(this));
     this.revertButton.addId("option-revert");
-    this.revertButton.setHoverComponent(Component.translatable("quickbinds.ui.options.revert"));
+    this.revertButton.tooltip(Tooltip.text(Component.translatable("quickbinds.ui.options.revert")));
 
     controls.addEntry(this.createValueWidget());
     controls.addEntry(this.revertButton);
@@ -73,6 +74,7 @@ public class OptionWidget extends HorizontalListWidget {
       case SLIDER:
         OptionSlider slider = this.entry.slider();
         boolean integer = OptionEntry.INTEGER_VALUE.matcher(this.entry.loadedValue()).matches();
+        assert slider != null;
         this.sliderWidget = new SliderWidget(slider.steps(), value -> this.activity.change(this, slider.toOptionValue(value, integer)));
         this.sliderWidget.range(slider.min(), slider.max());
         this.sliderWidget.withFormatter(slider::label);
@@ -148,7 +150,7 @@ public class OptionWidget extends HorizontalListWidget {
       this.nameWidget.setComponent(Component.text(this.entry.name()));
     }
 
-    this.nameWidget.setHoverComponent(hover);
+    this.nameWidget.tooltip(Tooltip.text(hover));
     this.revertButton.setEnabled(this.entry.isChanged());
   }
 }
