@@ -38,6 +38,9 @@ public class KeybindListener {
       if(key == null || key.isUnknown() || !key.equals(keyEvent.key()))
         continue;
 
+      if(!key.isPressed())
+        continue;
+
       this.profileController.loadProfile(profile.id());
     }
   }
