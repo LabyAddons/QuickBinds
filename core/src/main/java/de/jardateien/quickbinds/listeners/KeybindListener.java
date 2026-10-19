@@ -4,6 +4,7 @@ import de.jardateien.quickbinds.QuickBindsAddon;
 import de.jardateien.quickbinds.api.Profile;
 import de.jardateien.quickbinds.api.ProfileController;
 import de.jardateien.quickbinds.config.QuickBindsConfiguration;
+import net.labymod.api.Laby;
 import net.labymod.api.client.gui.screen.key.Key;
 import net.labymod.api.event.Subscribe;
 import net.labymod.api.event.client.input.KeyEvent;
@@ -22,6 +23,10 @@ public class KeybindListener {
   @Subscribe
   public void onKeyPressed(final KeyEvent keyEvent) {
     if(!this.config.enabled().get() || keyEvent.state() != State.PRESS)
+      return;
+
+    // Ignore hotkeys while a screen (chat, sign, book, settings) is open
+    if(Laby.labyAPI().minecraft().minecraftWindow().isScreenOpened())
       return;
 
     Key settingKey = this.config.keybind().get();
