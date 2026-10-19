@@ -166,10 +166,8 @@ public class DefaultProfileController implements ProfileController {
 
           try (BufferedReader reader = Files.newBufferedReader(infoPath)) {
             Profile jsonProfile = this.gson.fromJson(reader, Profile.class);
-            for(Profile profile : this.profiles) {
-              if(profile.id().equals(jsonProfile.id()))
-                break;
-            }
+            if (jsonProfile == null || jsonProfile.id() == null || this.profile(jsonProfile.id()) != null)
+              continue;
 
             this.profiles.add(jsonProfile);
           }

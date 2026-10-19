@@ -9,6 +9,7 @@ import net.labymod.api.client.gui.icon.catalog.IconsCommon;
 import net.labymod.api.client.gui.icon.catalog.IconsCursor;
 import net.labymod.api.client.gui.icon.catalog.IconsScreenshot;
 import net.labymod.api.client.component.Component;
+import net.labymod.api.client.component.format.NamedTextColor;
 import net.labymod.api.client.gui.lss.property.annotation.AutoWidget;
 import net.labymod.api.client.gui.screen.Parent;
 import net.labymod.api.client.gui.screen.widget.widgets.ComponentWidget;
@@ -33,7 +34,9 @@ public class ProfileWidget extends HorizontalListWidget {
   @Override
   public void initialize(Parent parent) {
     super.initialize(parent);
-    ComponentWidget name = ComponentWidget.text(this.profile.name() + " §7(" + this.profile.version()+")").addId("profile-name");
+    Component nameComponent = Component.text(this.profile.name())
+        .append(Component.text(" (" + this.profile.version() + ")", NamedTextColor.GRAY));
+    ComponentWidget name = ComponentWidget.component(nameComponent).addId("profile-name");
 
     HorizontalListWidget buttons = new HorizontalListWidget();
     buttons.addId("buttons");

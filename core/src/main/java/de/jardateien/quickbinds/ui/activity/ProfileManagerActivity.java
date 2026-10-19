@@ -17,6 +17,8 @@ import net.labymod.api.client.gui.tooltip.Tooltip;
 @AutoActivity
 public class ProfileManagerActivity extends Activity {
 
+  private static final int MAX_PROFILES = 13;
+
   private final VerticalListWidget<ProfileWidget> verticalListWidget = new VerticalListWidget<>().addId("container");
   private final ProfileController profileController;
 
@@ -46,7 +48,7 @@ public class ProfileManagerActivity extends Activity {
 
     buttonWidget.tooltip(Tooltip.text(Component.translatable("quickbinds.settings.profiles.button.tooltip")));
 
-    if(this.profileController.profiles().size() >= 14) {
+    if(this.profileController.profiles().size() >= MAX_PROFILES) {
       buttonWidget.setEnabled(false);
     }
 
